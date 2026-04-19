@@ -295,6 +295,49 @@
     });
   })();
 
+  // ─── ADAPTIVE VIEWBOX (the real mobile fix) ─────────────
+  // Native viewBox is 0 0 900 720 (aspect 1.25).
+  // Phones in portrait have aspect ~0.5 — with preserveAspectRatio "meet"
+  // the map gets shrunk to fit vertically, wasting width.
+  // Solution: reshape the viewBox so its aspect matches the container,
+  // keeping the map content region (x=200..760, y=80..640) centered.
+  const mapSvg = document.querySelector('#panelMap svg');
+  function adaptViewBox() {
+    if (!mapSvg) return;
+    const wrap = mapSvg.parentElement;
+    const rect = wrap.getBoundingClientRect();
+    if (rect.width < 20 || rect.height < 20) return;
+    const containerAR = rect.width / rect.height;
+    // Content region of interest (the actual geography, tight crop):
+    // Belgium south ~640, Netherlands north ~60, west coast ~140, east ~820
+    const contentW = 720;   // 820 - 100
+    const contentH = 620;   // 680 - 60
+    const contentCX = 460;  // horizontal midpoint
+    const contentCY = 370;  // vertical midpoint
+    let vbW, vbH;
+    const contentAR = contentW / contentH;
+    if (containerAR >= contentAR) {
+      // Container is wider than content: fit by height, widen viewBox
+      vbH = contentH;
+      vbW = contentH * containerAR;
+    } else {
+      // Container is narrower (phone portrait): fit by width, tall viewBox
+      vbW = contentW;
+      vbH = contentW / containerAR;
+    }
+    const vbX = contentCX - vbW / 2;
+    const vbY = contentCY - vbH / 2;
+    mapSvg.setAttribute('viewBox', `${vbX.toFixed(1)} ${vbY.toFixed(1)} ${vbW.toFixed(1)} ${vbH.toFixed(1)}`);
+  }
+  adaptViewBox();
+  let resizeRAF;
+  addEventListener('resize', () => {
+    cancelAnimationFrame(resizeRAF);
+    resizeRAF = requestAnimationFrame(adaptViewBox);
+  });
+  // Also re-run on orientation change with a delay (iOS rect can lag)
+  addEventListener('orientationchange', () => setTimeout(adaptViewBox, 200));
+
   // ─── ZOOM LIGHTBOX ──────────────────────────────────────────────
   // Tap inline photo → full-screen zoom view with pinch, pan, double-tap.
   const lb = document.getElementById('lightbox');

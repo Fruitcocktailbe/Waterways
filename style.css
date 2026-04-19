@@ -88,6 +88,17 @@ body[data-view="photo"] #panelPhoto{opacity:1;pointer-events:auto}
   display:block;
 }
 
+/* Mobile: give the map a focused, cropped view on the Low Countries
+   (JS sets viewBox dynamically, but this ensures proper fit). */
+@media (max-aspect-ratio: 4/5) {
+  /* Portrait phones: scale text up slightly so labels don't vanish */
+  .city-label-major{font-size:18px}
+  .city-label-minor{font-size:12px}
+  .annot{font-size:12px}
+  .annot-canal{font-size:12px}
+  .sea-label{font-size:22px}
+}
+
 /* ═════════════ MAP STYLING (SVG classes) ═════════════ */
 .sea-wash{mix-blend-mode:multiply}
 .coast{fill:none;stroke:var(--ink-2);stroke-width:.8;stroke-linejoin:round;stroke-linecap:round}
