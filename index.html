@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Waterways of the Low Countries</title>
+<meta name="description" content="Scroll through two thousand years of canals, rivers, and dikes across Belgium and the Netherlands — Roman engineering to the Delta Works." />
+<meta name="theme-color" content="#f5efe0" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+
+<meta property="og:title" content="Waterways of the Low Countries" />
+<meta property="og:description" content="Two thousand years of canals, rivers, and dikes across Belgium and the Netherlands." />
+<meta property="og:type" content="website" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://en.wikipedia.org" crossorigin />
+<link rel="preconnect" href="https://upload.wikimedia.org" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..900,30..100,0..1;1,9..144,300..900,30..100,0..1&display=swap" rel="stylesheet" />
+
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body data-era="1" data-view="map">
+
+<div class="app">
+
+  <header class="topbar" role="banner">
+    <div class="brand">Waterways · Low Countries</div>
+    <div class="view-toggle" role="tablist" aria-label="View">
+      <button class="vt" data-view="map" aria-current="true" aria-label="Map view" type="button">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><path d="M2,3 L5,2 L9,3 L12,2 L12,11 L9,12 L5,11 L2,12 Z M5,2 V11 M9,3 V12" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        <span>Map</span>
+      </button>
+      <button class="vt" data-view="photo" aria-current="false" aria-label="Photo view" type="button">
+        <svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true"><rect x="1.5" y="3" width="11" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="7" cy="7" r="2" fill="none" stroke="currentColor" stroke-width="1.2"/><circle cx="10.5" cy="4.5" r=".6" fill="currentColor"/></svg>
+        <span>Photo</span>
+      </button>
+    </div>
+    <div class="range" aria-live="polite" id="range">47 CE</div>
+  </header>
+
+  <main class="stage" id="stage" aria-label="Waterways visualization">
+
+    <div class="panel panel-map" id="panelMap" aria-hidden="false">
+      <svg viewBox="0 0 900 720" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="map-title">
+    <title id="map-title">Map of Belgium and the Netherlands showing waterways for the selected period</title>
+
+    <defs>
+      <filter id="soft" x="-10%" y="-10%" width="120%" height="120%">
+        <feGaussianBlur stdDeviation="1.5"/>
+      </filter>
+      <filter id="softer" x="-10%" y="-10%" width="120%" height="120%">
+        <feGaussianBlur stdDeviation="3"/>
+      </filter>
+    </defs>
+
+    <!-- ═══════════════════════════════════════════════ NORTH SEA (watercolor layers) -->
+    <g class="sea-wash">
+      <!-- outermost wash, most diffuse -->
+      <path filter="url(#softer)" style="fill:var(--sea-3)"
+            d="M-20,-20 L560,-20 L540,30 Q500,55 440,70 Q380,85 340,105 Q290,135 265,170 Q245,215 235,265 Q225,315 220,360 Q230,395 265,410 L250,430 Q210,455 170,480 Q125,510 90,540 Q55,575 30,615 L-20,630 Z"/>
+      <!-- mid wash -->
+      <path filter="url(#soft)" style="fill:var(--sea-2)"
+            d="M-20,-20 L520,-20 L500,40 Q450,65 395,85 Q340,110 310,150 Q285,200 275,260 Q265,320 255,370 Q268,400 290,415 L275,435 Q230,470 190,500 Q145,530 110,565 L-20,580 Z"/>
+      <!-- innermost crisp wash -->
+      <path style="fill:var(--sea-1)"
+            d="M-20,-20 L490,-20 L465,50 Q415,75 365,100 Q315,130 295,175 Q280,225 275,275 Q270,325 265,370 Q280,395 305,405 L285,430 Q245,460 200,490 Q160,520 125,555 L-20,570 Z"/>
+    </g>
+
+    <!-- Sea label -->
+    <text x="130" y="175" class="sea-label">North Sea</text>
+    <text x="135" y="200" class="annot" font-size="11">Noordzee · Mer du Nord</text>
+
+    <!-- ═══════════════════════════════════════════════ COASTLINE -->
+    <path class="coast" d="
+      M900,105 Q820,115 740,118 Q670,122 605,108 Q540,95 490,105 Q445,115 420,135
+      Q405,160 395,195 Q388,230 385,265 Q385,300 380,335 Q372,370 340,385
+      Q305,397 285,402 Q260,410 270,432 Q240,440 215,465 Q190,488 170,520 Q145,555 125,595
+    "/>
+
+    <!-- Inland sea (Zuiderzee / IJsselmeer) — shown as open water pre-1932, closed after -->
+    <path id="zuiderzee-open" style="fill:var(--sea-1)" filter="url(#soft)"
+          d="M510,115 Q485,150 490,210 Q500,270 540,295 Q600,310 650,295 Q685,270 690,220 Q685,160 660,125 Q585,105 510,115 Z"/>
+    <path id="zuiderzee-coast" class="coast"
+          d="M510,115 Q485,150 490,210 Q500,270 540,295 Q600,310 650,295 Q685,270 690,220 Q685,160 660,125 Q585,105 510,115 Z"/>
+
+    <!-- ═══════════════════════════════════════════════ RIVERS (natural, always visible) -->
+    <g id="rivers">
+      <!-- Rhine enters from east, through Arnhem, splits -->
+      <path class="river" d="M900,280 Q810,285 730,290 Q670,295 640,300"/>
+      <!-- Lek branch to Rotterdam -->
+      <path class="river" d="M640,300 Q580,295 520,298 Q460,305 420,312 Q400,315 390,318"/>
+      <!-- Waal branch via Nijmegen to Dordrecht -->
+      <path class="river" d="M640,300 Q620,325 590,345 Q540,360 490,355 Q450,352 430,345"/>
+      <!-- IJssel branch going north to IJsselmeer -->
+      <path class="river river-sub" d="M660,298 Q655,260 650,220 Q648,180 650,150"/>
+      <!-- Meuse / Maas entering from southeast -->
+      <path class="river" d="M900,570 Q830,568 770,565 Q710,562 680,555 Q640,545 610,525 Q580,500 550,480 Q510,450 480,430 Q450,410 430,395 Q420,380 425,360"/>
+      <!-- Scheldt from south through Ghent, Antwerp -->
+      <path class="river" d="M495,720 Q485,680 475,640 Q460,600 450,560 Q440,520 438,490 Q438,460 440,440 Q445,420 460,410 Q475,405 490,410 Q495,415 497,420"/>
+      <!-- Scheldt estuary to sea -->
+      <path class="river" d="M497,420 Q460,420 425,415 Q395,412 370,410 Q340,408 320,410"/>
+      <!-- Ijzer in Flanders -->
+      <path class="river river-sub" d="M240,550 Q255,510 275,480 Q295,460 315,455"/>
+      <!-- Sambre feeder to Meuse -->
+      <path class="river river-sub" d="M500,680 Q555,670 600,655 Q630,640 650,625"/>
+    </g>
+
+    <!-- River labels (subtle) -->
+    <g class="annot" font-size="10">
+      <text x="810" y="275" transform="rotate(2 810 275)">Rhine</text>
+      <text x="825" y="555" transform="rotate(-2 825 555)">Meuse</text>
+      <text x="488" y="700" transform="rotate(80 488 700)">Scheldt</text>
+      <text x="655" y="200" transform="rotate(92 655 200)" opacity=".6">IJssel</text>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════ ERA LAYERS -->
+
+    <!-- ··············· ERA I · Roman ··············· -->
+    <g id="era-1" class="era-layer">
+      <!-- Fossa Corbulonis : Rhine at Leiden to Meuse at Voorburg -->
+      <path class="canal" d="M378,252 L362,318"/>
+      <!-- Fossa Drusiana : Rhine to IJssel (approximate) -->
+      <path class="canal canal-dash" d="M660,300 Q650,270 648,240 L650,205"/>
+      <!-- Limes (Roman frontier along Rhine) -->
+      <path style="stroke:var(--canal)" stroke-width="1" stroke-dasharray="2 2" fill="none" opacity=".55"
+            d="M900,275 Q800,283 700,287 Q600,293 520,298 Q460,304 400,310"/>
+      <text x="520" y="275" class="annot-canal" font-size="9">Roman limes</text>
+      <text x="360" y="290" class="annot-canal" font-size="10" text-anchor="end">Fossa</text>
+      <text x="360" y="302" class="annot-canal" font-size="10" text-anchor="end">Corbulonis</text>
+    </g>
+
+    <!-- ··············· ERA II · Early Medieval ··············· -->
+    <g id="era-2" class="era-layer">
+      <!-- Dorestad marker with concentric rings -->
+      <g transform="translate(540,268)">
+        <circle r="8" style="fill:var(--canal)"/>
+        <circle r="16" fill="none" style="stroke:var(--canal)" stroke-width="1" opacity=".7"/>
+        <circle r="26" fill="none" style="stroke:var(--canal)" stroke-width=".5" opacity=".4"/>
+      </g>
+      <text x="555" y="272" font-family="var(--f)" font-weight="700" font-size="13" style="fill:var(--ink)" letter-spacing=".05em">DORESTAD</text>
+      <text x="555" y="286" class="annot-canal" font-size="9">largest port in NW Europe</text>
+
+      <!-- Trade routes fanning out -->
+      <g class="trade">
+        <path d="M540,260 Q380,180 200,95"/>
+        <path d="M548,262 Q700,200 860,115"/>
+        <path d="M545,280 Q680,380 830,560"/>
+      </g>
+      <g class="trade-end">
+        <circle cx="200" cy="95" r="3"/>
+        <circle cx="860" cy="115" r="3"/>
+        <circle cx="830" cy="560" r="3"/>
+      </g>
+      <text x="205" y="88" font-size="10" style="fill:var(--ink)" font-family="var(--f)" font-weight="500">York</text>
+      <text x="865" y="108" font-size="10" style="fill:var(--ink)" font-family="var(--f)" font-weight="500">Haithabu</text>
+      <text x="835" y="575" font-size="10" style="fill:var(--ink)" font-family="var(--f)" font-weight="500">Rhineland</text>
+
+      <!-- Tiel emerging -->
+      <g transform="translate(605,305)">
+        <circle r="3" style="fill:var(--ink)"/>
+        <text x="6" y="3" font-size="9" font-style="italic" font-family="var(--f)" style="fill:var(--ink)">Tiel</text>
+      </g>
+    </g>
+
+    <!-- ··············· ERA III · Medieval ··············· -->
+    <g id="era-3" class="era-layer">
+      <!-- Zwin inlet (accentuated, 13th-15th c. lifeline of Bruges) -->
+      <path style="fill:var(--sea-1)" d="M370,412 Q355,418 340,412 Q325,405 315,402 L330,418 Q350,425 370,422 Z"/>
+      <path class="river" stroke-width="3" d="M373,418 Q395,425 415,428"/>
+      <text x="395" y="405" class="annot" font-size="10">Zwin</text>
+
+      <!-- Bruges → Damme canal (to Zwin) -->
+      <path class="canal" d="M355,452 Q370,440 385,428"/>
+      <!-- Ghent–Bruges canal (Lieve) -->
+      <path class="canal canal-dash" d="M360,455 Q395,463 428,470"/>
+      <!-- Ypres–Ijzer canal -->
+      <path class="canal canal-dash" d="M308,500 Q305,490 300,478"/>
+
+      <!-- Early polders in Holland -->
+      <g class="polder" opacity=".7">
+        <rect x="445" y="175" width="34" height="14" rx="2"/>
+        <rect x="395" y="195" width="30" height="13" rx="2"/>
+        <rect x="430" y="210" width="32" height="14" rx="2"/>
+      </g>
+      <text x="480" y="185" class="annot-canal" font-size="9" font-style="italic">first polders</text>
+    </g>
+
+    <!-- ··············· ERA IV · Golden Age ··············· -->
+    <g id="era-4" class="era-layer">
+      <!-- Beemster, Schermer, Purmer, Wormer polders (NW of Amsterdam) -->
+      <g class="polder">
+        <rect x="430" y="150" width="46" height="28" rx="3"/>
+        <rect x="415" y="178" width="38" height="26" rx="3"/>
+        <rect x="455" y="185" width="30" height="22" rx="3"/>
+        <rect x="392" y="162" width="24" height="18" rx="3"/>
+      </g>
+      <g font-family="var(--f)" style="fill:var(--canal)" font-style="italic">
+        <text x="453" y="167" text-anchor="middle" font-size="9" font-weight="600">BEEMSTER</text>
+        <text x="453" y="177" text-anchor="middle" font-size="7">1612</text>
+        <text x="434" y="194" text-anchor="middle" font-size="7">Schermer</text>
+        <text x="470" y="198" text-anchor="middle" font-size="7">Purmer</text>
+        <text x="404" y="175" text-anchor="middle" font-size="6.5">Worm.</text>
+      </g>
+
+      <!-- Amsterdam canal belt mini-glyph -->
+      <g transform="translate(458,228)" fill="none" style="stroke:var(--river)" stroke-width="1">
+        <path d="M-14,-3 Q-12,12 0,17 Q12,12 14,-3" opacity=".85"/>
+        <path d="M-10,-3 Q-8,9 0,13 Q8,9 10,-3" opacity=".7"/>
+        <path d="M-6,-3 Q-5,6 0,9 Q5,6 6,-3" opacity=".55"/>
+        <circle cy="-3" r="1.5" style="fill:var(--canal)"/>
+      </g>
+
+      <!-- Trekvaart barge lines -->
+      <g style="stroke:var(--ink-2)" stroke-width=".8" stroke-dasharray="3 2" fill="none" opacity=".55">
+        <path d="M450,230 Q418,235 390,245"/>  <!-- Amsterdam - Haarlem -->
+        <path d="M465,235 Q495,245 515,255"/>  <!-- Amsterdam - Utrecht -->
+        <path d="M448,235 Q410,255 378,280"/>  <!-- Amsterdam - Leiden -->
+        <path d="M385,255 Q375,275 370,300"/>  <!-- Haarlem - Leiden/Delft -->
+        <path d="M375,285 Q385,308 398,325"/>  <!-- Leiden - Delft - Rotterdam -->
+      </g>
+      <text x="395" y="215" class="annot" font-size="9" opacity=".7">trekvaart network</text>
+    </g>
+
+    <!-- ··············· ERA V · Industrial ··············· -->
+    <g id="era-5" class="era-layer">
+      <!-- North Holland Canal (Amsterdam → Den Helder) -->
+      <path class="canal" d="M465,220 Q440,170 425,120 Q420,90 423,70"/>
+      <!-- North Sea Canal (Amsterdam → IJmuiden) -->
+      <path class="canal" d="M455,225 Q410,220 368,220"/>
+      <!-- New Waterway (Rotterdam → Hoek van Holland) -->
+      <path class="canal" d="M400,320 Q360,318 325,318"/>
+      <!-- Ghent–Terneuzen Canal -->
+      <path class="canal" d="M432,460 Q425,435 420,415 Q418,398 415,388"/>
+      <!-- Brussels–Charleroi Canal -->
+      <path class="canal" d="M512,505 Q528,540 548,580 Q562,615 570,645"/>
+      <!-- Brussels–Scheldt (maritime, going to Scheldt near Antwerp) -->
+      <path class="canal" d="M512,500 Q498,478 485,455"/>
+
+      <!-- Canal terminals -->
+      <g style="fill:var(--canal)">
+        <rect x="419" y="66" width="7" height="7"/>
+        <rect x="364" y="216" width="7" height="7"/>
+        <rect x="321" y="314" width="7" height="7"/>
+        <rect x="411" y="384" width="7" height="7"/>
+      </g>
+
+      <!-- Canal labels -->
+      <g font-family="var(--f)" font-size="9" style="fill:var(--canal)" font-style="italic" font-weight="500">
+        <text x="395" y="135" text-anchor="end">N. Holland Canal</text>
+        <text x="400" y="205" text-anchor="end">N. Sea Canal</text>
+        <text x="325" y="310" text-anchor="end">New Waterway</text>
+        <text x="395" y="425" text-anchor="end">Ghent–Terneuzen</text>
+        <text x="578" y="620">Brussels–Charleroi</text>
+      </g>
+
+      <!-- Terminal-only cities -->
+      <g class="city-dot-major-sm" style="fill:var(--ink)">
+        <circle cx="422" cy="70" r="3"/>
+        <circle cx="367" cy="220" r="3"/>
+        <circle cx="324" cy="318" r="3"/>
+        <circle cx="414" cy="388" r="3"/>
+      </g>
+      <g font-family="var(--f)" font-size="8" font-style="italic" style="fill:var(--ink)">
+        <text x="428" y="73">Den Helder</text>
+        <text x="360" y="220" text-anchor="end">IJmuiden</text>
+        <text x="320" y="318" text-anchor="end">Hoek v.H.</text>
+        <text x="409" y="390" text-anchor="end">Terneuzen</text>
+        <text x="575" y="652">Charleroi</text>
+      </g>
+    </g>
+
+    <!-- ··············· ERA VI · 20th Century ··············· -->
+    <g id="era-6" class="era-layer">
+      <!-- Afsluitdijk (closes Zuiderzee) -->
+      <path class="dam" d="M510,118 Q560,100 620,102 Q665,108 688,122"/>
+      <path class="dam-accent" d="M510,118 Q560,100 620,102 Q665,108 688,122"/>
+      <text x="600" y="88" text-anchor="middle" font-family="var(--f)" font-size="11" font-weight="600" style="fill:var(--ink)">Afsluitdijk</text>
+      <text x="600" y="100" text-anchor="middle" font-family="var(--f)" font-size="8" font-style="italic" style="fill:var(--ink)" opacity=".75">1932 · 32 km</text>
+
+      <!-- IJsselmeer re-color (freshwater tint) -->
+      <path style="fill:var(--sea-1)" opacity=".4" d="M510,120 Q485,155 492,215 Q502,272 545,298 Q600,312 648,298 Q682,272 688,220 Q683,160 658,125 Q585,108 510,120 Z"/>
+
+      <!-- Flevoland polders (1942 & 1968) -->
+      <g class="polder">
+        <path d="M530,170 Q548,192 575,202 Q605,208 625,198 Q633,182 625,165 Q595,157 562,162 Q540,165 530,170 Z"/>
+        <path d="M530,215 Q545,240 575,255 Q608,262 640,252 Q655,230 645,210 Q615,205 578,207 Q545,210 530,215 Z"/>
+      </g>
+      <g font-family="var(--f)" style="fill:var(--canal)" font-style="italic" font-weight="500">
+        <text x="578" y="185" text-anchor="middle" font-size="8">NE Polder</text>
+        <text x="585" y="235" text-anchor="middle" font-size="8">Flevoland</text>
+      </g>
+
+      <!-- Delta Works (Zeeland dams) -->
+      <g>
+        <path class="dam" d="M315,388 Q338,382 360,386"/>
+        <path class="dam" d="M300,408 Q325,402 350,408"/>
+        <path class="dam" d="M290,428 Q318,425 345,432"/>
+        <path class="dam-accent" d="M315,388 Q338,382 360,386"/>
+        <path class="dam-accent" d="M300,408 Q325,402 350,408"/>
+        <path class="dam-accent" d="M290,428 Q318,425 345,432"/>
+      </g>
+      <text x="268" y="410" text-anchor="end" font-family="var(--f)" font-size="11" font-weight="600" style="fill:var(--ink)">Delta Works</text>
+      <text x="268" y="422" text-anchor="end" font-family="var(--f)" font-size="8" font-style="italic" style="fill:var(--ink)" opacity=".75">1954–97</text>
+
+      <!-- Maeslantkering -->
+      <g transform="translate(340,330)">
+        <rect x="-3.5" y="-3.5" width="7" height="7" style="fill:var(--ink)"/>
+        <text x="-6" y="3" text-anchor="end" font-family="var(--f)" font-size="8" font-style="italic" style="fill:var(--ink)">Maeslantkering</text>
+      </g>
+
+      <!-- Albert Canal (Antwerp → Liège) -->
+      <path class="canal" d="M498,430 Q555,450 620,510 Q660,540 690,562"/>
+      <text x="595" y="485" font-family="var(--f)" font-size="10" style="fill:var(--canal)" font-style="italic" font-weight="500">Albert Canal · 1939</text>
+
+      <!-- Lelystad (Flevoland new town) -->
+      <g transform="translate(578,220)">
+        <circle r="3" style="fill:var(--ink)"/>
+        <text x="6" y="3" font-family="var(--f)" font-size="9" font-style="italic" style="fill:var(--ink)">Lelystad</text>
+      </g>
+    </g>
+
+    <!-- ··············· ERA VII · Today ··············· -->
+    <g id="era-7" class="era-layer">
+      <!-- Show full network: Afsluitdijk, Delta Works, Albert Canal, key ship canals, polders — compact overlay -->
+      <!-- Afsluitdijk -->
+      <path class="dam" d="M510,118 Q560,100 620,102 Q665,108 688,122"/>
+      <!-- IJsselmeer tint -->
+      <path style="fill:var(--sea-1)" opacity=".35" d="M510,120 Q485,155 492,215 Q502,272 545,298 Q600,312 648,298 Q682,272 688,220 Q683,160 658,125 Q585,108 510,120 Z"/>
+      <!-- Flevoland -->
+      <g class="polder" opacity=".85">
+        <path d="M530,170 Q548,192 575,202 Q605,208 625,198 Q633,182 625,165 Q595,157 562,162 Q540,165 530,170 Z"/>
+        <path d="M530,215 Q545,240 575,255 Q608,262 640,252 Q655,230 645,210 Q615,205 578,207 Q545,210 530,215 Z"/>
+      </g>
+      <!-- Delta Works -->
+      <g>
+        <path class="dam" d="M315,388 Q338,382 360,386"/>
+        <path class="dam" d="M300,408 Q325,402 350,408"/>
+        <path class="dam" d="M290,428 Q318,425 345,432"/>
+      </g>
+      <!-- Ship canals -->
+      <g>
+        <path class="canal" stroke-width="1.8" opacity=".85" d="M455,225 Q410,220 368,220"/>
+        <path class="canal" stroke-width="1.8" opacity=".85" d="M400,320 Q360,318 325,318"/>
+        <path class="canal" stroke-width="1.8" opacity=".85" d="M432,460 Q425,435 420,415 Q418,398 415,388"/>
+        <path class="canal" stroke-width="1.8" opacity=".85" d="M512,505 Q528,540 548,580 Q562,615 570,645"/>
+      </g>
+      <!-- Albert Canal -->
+      <path class="canal" stroke-width="2.4" d="M498,430 Q555,450 620,510 Q660,540 690,562"/>
+
+      <!-- Mega-port ribbons -->
+      <g>
+        <!-- Rotterdam mega-port (Maasvlakte) -->
+        <rect x="310" y="320" width="95" height="14" style="fill:var(--canal)" opacity=".35" rx="2"/>
+        <text x="358" y="315" text-anchor="middle" font-family="var(--f)" font-size="9" font-weight="600" style="fill:var(--canal)">Europoort · Maasvlakte</text>
+        <!-- Antwerp port -->
+        <rect x="478" y="400" width="42" height="38" style="fill:var(--canal)" opacity=".3" rx="2"/>
+      </g>
+
+      <!-- Port stars -->
+      <g>
+        <path transform="translate(405,320)" d="M0,-8 L2,-2 L8,-2 L3,2 L5,8 L0,4 L-5,8 L-3,2 L-8,-2 L-2,-2 Z" style="fill:var(--canal)"/>
+        <path transform="translate(498,422)" d="M0,-8 L2,-2 L8,-2 L3,2 L5,8 L0,4 L-5,8 L-3,2 L-8,-2 L-2,-2 Z" style="fill:var(--canal)"/>
+      </g>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════ CITY LABELS (tiered) -->
+
+    <!-- ANCIENT / ROMAN tier -->
+    <g class="city-ancient">
+      <g transform="translate(378,252)"><circle class="city-dot" r="3"/><text class="city-label city-label-minor" x="6" y="3">Matilo</text></g>
+      <g transform="translate(362,275)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="6" y="3">Forum Hadriani</text></g>
+      <g transform="translate(680,330)"><circle class="city-dot" r="3"/><text class="city-label city-label-minor" x="6" y="3">Noviomagus</text></g>
+      <g transform="translate(510,240)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="6" y="3">Traiectum</text></g>
+    </g>
+
+    <!-- MEDIEVAL tier -->
+    <g class="city-medieval">
+      <!-- Bruges, Ghent, Ypres bigger -->
+      <g transform="translate(355,450)">
+        <circle class="city-dot-major" r="4.5"/>
+        <text class="city-label city-label-major" x="8" y="5">BRUGGE</text>
+      </g>
+      <g transform="translate(430,472)">
+        <circle class="city-dot-major" r="4.5"/>
+        <text class="city-label city-label-major" x="8" y="5">GENT</text>
+      </g>
+      <g transform="translate(295,500)">
+        <circle class="city-dot" r="3.5"/>
+        <text class="city-label" x="-8" y="4" text-anchor="end" font-size="11">YPRES</text>
+      </g>
+      <g transform="translate(370,440)">
+        <circle class="city-dot" r="2.5"/>
+        <text class="city-label city-label-minor" x="6" y="-4">Damme</text>
+      </g>
+      <g transform="translate(460,230)">
+        <circle class="city-dot" r="3"/>
+        <text class="city-label" x="8" y="4" font-size="10">AMSTERDAM</text>
+      </g>
+      <g transform="translate(515,255)">
+        <circle class="city-dot" r="2.5"/>
+        <text class="city-label city-label-minor" x="6" y="3">Utrecht</text>
+      </g>
+      <g transform="translate(440,350)">
+        <circle class="city-dot" r="2.5"/>
+        <text class="city-label city-label-minor" x="6" y="3">Dordrecht</text>
+      </g>
+    </g>
+
+    <!-- MODERN tier (Golden Age onwards; full city network) -->
+    <g class="city-modern">
+      <!-- Dutch cities -->
+      <g transform="translate(460,228)">
+        <circle class="city-dot-major" r="5"/>
+        <text class="city-label city-label-major" x="9" y="5">AMSTERDAM</text>
+      </g>
+      <g transform="translate(400,318)">
+        <circle class="city-dot-major" r="5"/>
+        <text class="city-label city-label-major" x="9" y="5">ROTTERDAM</text>
+      </g>
+      <g transform="translate(498,420)">
+        <circle class="city-dot-major" r="5"/>
+        <text class="city-label city-label-major" x="9" y="5">ANTWERPEN</text>
+      </g>
+      <g transform="translate(430,472)">
+        <circle class="city-dot-major" r="4.5"/>
+        <text class="city-label city-label-major" x="9" y="5">GENT</text>
+      </g>
+      <g transform="translate(355,450)">
+        <circle class="city-dot-major" r="4.5"/>
+        <text class="city-label city-label-major" x="-9" y="5" text-anchor="end">BRUGGE</text>
+      </g>
+      <g transform="translate(515,503)">
+        <circle class="city-dot-major" r="5"/>
+        <text class="city-label city-label-major" x="9" y="5">BRUSSEL</text>
+      </g>
+      <g transform="translate(620,510)">
+        <circle class="city-dot" r="3.5"/>
+        <text class="city-label" x="8" y="4" font-size="11">HASSELT</text>
+      </g>
+      <g transform="translate(715,560)">
+        <circle class="city-dot" r="4"/>
+        <text class="city-label" x="8" y="4" font-size="11">LIÈGE</text>
+      </g>
+      <!-- Minor supporting cities -->
+      <g transform="translate(515,250)"><circle class="city-dot" r="3"/><text class="city-label city-label-minor" x="6" y="3">Utrecht</text></g>
+      <g transform="translate(380,250)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="-5" y="3" text-anchor="end">Leiden</text></g>
+      <g transform="translate(415,225)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="-5" y="-4" text-anchor="end">Haarlem</text></g>
+      <g transform="translate(355,278)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="-5" y="3" text-anchor="end">Den Haag</text></g>
+      <g transform="translate(680,260)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="6" y="3">Arnhem</text></g>
+      <g transform="translate(680,330)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="6" y="3">Nijmegen</text></g>
+      <g transform="translate(680,540)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="-5" y="3" text-anchor="end">Maastricht</text></g>
+      <g transform="translate(440,350)"><circle class="city-dot" r="2.5"/><text class="city-label city-label-minor" x="-5" y="3" text-anchor="end">Dordrecht</text></g>
+    </g>
+
+    <!-- ═══════════════════════════════════════════════ COMPASS -->
+    <g transform="translate(840,640)">
+      <circle r="18" fill="none" style="stroke:var(--ink-2)" stroke-width=".6" opacity=".7"/>
+      <path d="M0,-15 L3,0 L0,15 L-3,0 Z" style="fill:var(--canal)"/>
+      <text y="-22" text-anchor="middle" font-family="var(--f)" font-size="11" font-style="italic" style="fill:var(--ink)">N</text>
+    </g>
+
+    <!-- SCALE / attribution footer inside map -->
+    <g font-family="var(--f)" font-size="9" style="fill:var(--ink)" opacity=".5">
+      <text x="22" y="700">WATERWAYS · BELGIUM · NETHERLANDS</text>
+    </g>
+  </svg>
+    </div>
+
+    <div class="panel panel-photo" id="panelPhoto" aria-hidden="true">
+      <figure class="photo-figure">
+        <div class="photo-frame">
+          <img id="photoImg" alt="" decoding="async" />
+          <span class="zoom-cue" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m20 20-4.8-4.8"/><path d="M10.5 7.5v6M7.5 10.5h6"/></svg>
+          </span>
+          <div class="photo-loader" id="photoLoader" data-on="true" aria-hidden="true">
+            <svg viewBox="0 0 40 40" width="28" height="28"><circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="22 66" class="spin"/></svg>
+          </div>
+          <div class="photo-error" id="photoError" hidden>
+            <p>Image unavailable for this period.</p>
+            <small>Use the <strong>Map</strong> toggle above instead.</small>
+          </div>
+        </div>
+        <figcaption class="photo-cap" id="photoCap"></figcaption>
+      </figure>
+    </div>
+
+  </main>
+
+  <section class="info" aria-live="polite" aria-atomic="true">
+    <div class="meta">
+      <span class="era-num" id="eraNum">I</span>
+      <span id="eraTag">47 – 400 CE · Roman</span>
+    </div>
+    <h1 class="title" id="eraTitle">Engineering arrives at the <em>mouth of the Rhine</em></h1>
+    <p class="desc" id="eraDesc">The first engineered waterways in the Low Countries were Roman. The Fossa Corbulonis, cut around 47 CE, linked the Rhine to the Meuse so that ships could avoid the dangerous North Sea coast.</p>
+  </section>
+
+  <nav class="selector" aria-label="Period selector">
+    <div class="bar" id="chipBar" role="tablist">
+      <button class="chip" data-era="1" role="tab" aria-current="true" type="button"><span class="num">I</span><span class="yr">47 CE</span></button>
+      <button class="chip" data-era="2" role="tab" type="button"><span class="num">II</span><span class="yr">500</span></button>
+      <button class="chip" data-era="3" role="tab" type="button"><span class="num">III</span><span class="yr">1000</span></button>
+      <button class="chip" data-era="4" role="tab" type="button"><span class="num">IV</span><span class="yr">1500</span></button>
+      <button class="chip" data-era="5" role="tab" type="button"><span class="num">V</span><span class="yr">1700</span></button>
+      <button class="chip" data-era="6" role="tab" type="button"><span class="num">VI</span><span class="yr">1900</span></button>
+      <button class="chip" data-era="7" role="tab" type="button"><span class="num">VII</span><span class="yr">Today</span></button>
+    </div>
+  </nav>
+
+</div>
+
+<!-- Zoom lightbox: opens on photo tap. Supports pinch-zoom, double-tap, drag-pan -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Zoomed image" hidden>
+  <button class="lb-close" id="lbClose" aria-label="Close zoom" type="button">
+    <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M3,3 L13,13 M13,3 L3,13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+  </button>
+  <div class="lb-stage" id="lbStage">
+    <img id="lbImg" alt="" />
+    <div class="lb-spin" id="lbSpin" aria-hidden="true">
+      <svg viewBox="0 0 40 40" width="32" height="32"><circle cx="20" cy="20" r="14" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="22 66" class="spin"/></svg>
+    </div>
+  </div>
+  <div class="lb-cap" id="lbCap"></div>
+  <div class="lb-hint" aria-hidden="true">pinch to zoom · double-tap to toggle</div>
+</div>
+
+<script src="/app.js" defer></script>
+
+</body>
+</html>
